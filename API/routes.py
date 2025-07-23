@@ -15,6 +15,7 @@ def calculate_power():
     
     result = power(data.a, data.b)
 
+
     log_request('/power', [data.a, data.b], result)
     return jsonify({"result": result}), 200
 
