@@ -13,3 +13,14 @@ def calculate():
     except ValidationError as e:
         return jsonify({"error": e.errors()}),400
     
+    if data.operation == 'power':
+        result = power(data.a, data.b)
+    elif data.operation == 'fibonacci':
+        result = fibonacci(data.a)
+    elif data.operation == 'factorial':
+        result = factorial(data.a)
+    else:
+        return jsonify({"error": "Invalid operation"}), 400
+    
+    log_request(data.operation, [data.a, data.b], result)
+    return jsonify({"result": result}), 200
