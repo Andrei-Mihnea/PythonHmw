@@ -6,7 +6,7 @@ from Database.storage import log_request
 
 math_bp = Blueprint('math', __name__)
 
-@math_bp.route('/power', methods=['POST'])
+@math_bp.route('/api/power', methods=['POST'])
 def calculate_power():
     try:
         data = MathRequest.parse_obj(request.get_json())
@@ -15,11 +15,12 @@ def calculate_power():
     
     result = power(data.a, data.b)
 
+
     log_request('/power', [data.a, data.b], result)
     return jsonify({"result": result}), 200
 
 
-@math_bp.route('/fibonacci', methods=['POST'])
+@math_bp.route('/api/fibonacci', methods=['POST'])
 def calculate_fibonacci():
     try:
         data = MathRequest.parse_obj(request.get_json())
@@ -32,7 +33,7 @@ def calculate_fibonacci():
     return jsonify({"result": result}), 200
 
 
-@math_bp.route('/factorial', methods=['POST'])
+@math_bp.route('/api/factorial', methods=['POST'])
 def calculate_factorial():
     try:
         data = MathRequest.parse_obj(request.get_json())
