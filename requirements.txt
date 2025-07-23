@@ -2,3 +2,5 @@ Flask
 pydantic
 click
 flake8
+sqlalchemy
+psycopg2-binary

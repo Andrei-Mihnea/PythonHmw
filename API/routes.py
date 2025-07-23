@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from app.services import power, fibonacci, factorial
-from app.models import MathRequest
+from math_service.API.services import power, fibonacci, factorial
+from Records.models import MathRequest
 from pydantic import ValidationError
-from app.storage import log_request
+from Database.storage import log_request
 
 math_bp = Blueprint('math', __name__)
 
