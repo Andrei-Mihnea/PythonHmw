@@ -3,6 +3,7 @@ storage = []
 def log_request(operation, inputs, result):
     """Log the request details."""
     storage.append({
+        "operation": operation,
         "inputs": inputs,
         "result": result
     })
