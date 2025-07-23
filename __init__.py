@@ -1,5 +1,5 @@
 from flask import Flask
-from math_service.API.routes import math_bp
+from API.routes import math_bp
 
 def create_app():
     app = Flask(__name__)

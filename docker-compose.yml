@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15
@@ -13,6 +11,21 @@ services:
       POSTGRES_DB: math_db
     volumes:
       - pg_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: math_container_app
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: postgres://user:123@db:5432/math_db
+    command: python main.py
 
 volumes:
   pg_data:
