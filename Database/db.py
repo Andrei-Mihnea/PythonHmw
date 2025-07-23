@@ -27,3 +27,6 @@ class RequestsLog(Base):
 
     def __repr__(self):
         return f"<RequestsLog(id={self.id}, endpoint={self.endpoint}, parameters={self.parameters}, result={self.result}, timestamp={self.timestamp})>"
+
+ 
+
