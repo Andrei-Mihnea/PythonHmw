@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from math_service.API.services import power, fibonacci, factorial
+from API.services import power, fibonacci, factorial
 from Records.models import MathRequest
 from pydantic import ValidationError
 from Database.storage import log_request

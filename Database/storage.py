@@ -20,4 +20,9 @@ def log_request(operation, inputs, result):
 
 def get_logs():
     """Retrieve all logged requests."""
-    return storage
+    session = SessionLocal()
+    try:
+        logs = session.query(RequestsLog).all()
+        return logs
+    finally:
+        session.close()
