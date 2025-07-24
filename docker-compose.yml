@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:16
     container_name: math_container_db
     restart: always
     ports:
@@ -24,8 +24,9 @@ services:
     volumes:
       - .:/app
     environment:
-      DATABASE_URL: postgres://user:123@db:5432/math_db
-    command: python main.py
+      DATABASE_URL: postgresql://user:123@db:5432/math_db
+    command: ["./wait-for-it.sh", "db", "5432", "python", "main.py"]
+
 
 volumes:
   pg_data:

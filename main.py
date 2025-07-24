@@ -1,8 +1,10 @@
 from __init__ import create_app
 from router import *
+from Database.db import RequestsLog
 
 app = create_app()
 router = Router()
+RequestsLog.init_db()
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -14,5 +16,5 @@ def handle_request(path):
 
 app.run(host="0.0.0.0", port=8000)
 if __name__ == '__main__':
-    RequestsLog.init_db()
+
     app.run(debug=True)
