@@ -1,6 +1,6 @@
 from __init__ import create_app
 from router import *
-from Database.db import RequestsLog
+from Database.log_db import RequestsLog
 
 app = create_app()
 router = Router()

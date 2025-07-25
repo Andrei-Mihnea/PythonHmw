@@ -23,7 +23,7 @@ class Router:
         spec = importlib.util.spec_from_file_location(class_name, controller_file)
         module = importlib.util.module_from_spec(spec)
         sys.modules[class_name] = module
-        spec.loader.exec_module(module)
+        spec.loader.exec_module(module) 
 
         controller_class = getattr(module, class_name, None)
         if controller_class is None:
