@@ -28,5 +28,32 @@ class RequestsLog(Base):
     def __repr__(self):
         return f"<RequestsLog(id={self.id}, endpoint={self.endpoint}, parameters={self.parameters}, result={self.result}, timestamp={self.timestamp})>"
 
- 
+    def get_log_by_id(self, log_id):
+        """Retrieve a log entry by its ID."""
+        session = SessionLocal()
+        try:
+            log = session.query(RequestsLog).filter(RequestsLog.id == log_id).first()
+            return log
+        finally:
+            session.close()
+
+    def get_logs_by_endpoint(self, endpoint):
+        """Retrieve log entries by endpoint."""
+        session = SessionLocal()
+        try:
+            logs = session.query(RequestsLog).filter(RequestsLog.endpoint == endpoint).all()
+            return logs
+        finally:
+            session.close()
+    
+    def get_logs_by_timestamp(self, start_time, end_time):
+        """Retrieve log entries within a specific time range."""
+        session = SessionLocal()
+        try:
+            logs = session.query(RequestsLog).filter(RequestsLog.timestamp.between(start_time, end_time)).all()
+            return logs
+        finally:
+            session.close()
+    
+    
 
