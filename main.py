@@ -1,10 +1,14 @@
 from __init__ import create_app
 from router import *
 from Database.log_db import RequestsLog
+from Database.user_db import User
+
 
 app = create_app()
 router = Router()
+
 RequestsLog.init_db()
+User.init_db()
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
