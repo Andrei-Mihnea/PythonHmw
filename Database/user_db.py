@@ -2,8 +2,9 @@ import os
 from sqlalchemy import create_engine, Column, Integer, String, Text, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import bcrypt
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://user:123@localhost:5432/user_db')
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/postgres')
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
@@ -51,3 +52,17 @@ class User(Base):
             return user
         finally:
             session.close()
+
+    def exists_password_and_user(self, usr, password):
+        """Check if a user with the given username and password exists."""
+        session = SessionLocal()
+        try:
+            user = session.query(User).filter(User.username == usr).first()
+            print(password.encode('utf-8'))
+            print(user.password.encode('utf-8'))
+            if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+                return True
+            return False
+        finally:
+            session.close()
+

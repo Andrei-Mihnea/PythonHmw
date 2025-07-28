@@ -4,3 +4,5 @@ click
 flake8
 sqlalchemy
 psycopg2-binary
+bcrypt
+PyJWT

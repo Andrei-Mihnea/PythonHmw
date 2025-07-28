@@ -4,11 +4,11 @@ services:
     container_name: math_container_db
     restart: always
     ports:
-      - "5432:5432"
+      - "15432:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: math_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     volumes:
       - pg_data:/var/lib/postgresql/data
 
@@ -24,7 +24,7 @@ services:
     volumes:
       - .:/app
     environment:
-      DATABASE_URL: postgresql://user:123@db:5432/math_db
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
     command: ["sh", "-c", "ls -la && chmod +x wait-for-it.sh && ./wait-for-it.sh db 5432 python main.py"]
 volumes:
   pg_data:
