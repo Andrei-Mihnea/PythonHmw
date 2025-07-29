@@ -56,5 +56,17 @@ class RequestsLog(Base):
         finally:
             session.close()
     
+    def get_logs_by_username(self, username):
+        """Retrieve log entries by username."""
+        session = SessionLocal()
+        try:
+            logs = session.query(RequestsLog).filter(RequestsLog.username == username).order_by(RequestsLog.timestamp.desc()).limit(10).all()
+            if logs is not None:
+                return logs
+            else:
+                return None
+        finally:
+            session.close()
+    
     
 
