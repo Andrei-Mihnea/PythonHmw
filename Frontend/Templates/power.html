@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Power Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e3c72;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #ffffff20;
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    input, button {
+      padding: 0.75rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      border: none;
+    }
+
+    button {
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      color: white;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Power Calculator</h2>
+    <input type="number" id="base" placeholder="Base (a)" />
+    <input type="number" id="exponent" placeholder="Exponent (b)" />
+    <button onclick="calculatePower()">Calculate</button>
+    <div class="result" id="resultDisplay"></div>
+  </div>
+
+  <script>
+    function calculatePower() {
+      const a = parseFloat(document.getElementById('base').value);
+      const b = parseFloat(document.getElementById('exponent').value);
+
+      fetch('/api/power', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ a, b })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.result !== undefined) {
+          document.getElementById('resultDisplay').innerText = `Result: ${data.result}`;
+        } else {
+          document.getElementById('resultDisplay').innerText = `Error: ${JSON.stringify(data.error)}`;
+        }
+      })
+      .catch(err => {
+        document.getElementById('resultDisplay').innerText = `Error: ${err.message}`;
+      });
+    }
+  </script>
+</body>
+</html>
