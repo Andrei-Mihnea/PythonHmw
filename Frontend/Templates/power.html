@@ -11,7 +11,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 1rem;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
     .card {
@@ -20,25 +22,25 @@
       border-radius: 1rem;
       text-align: center;
       backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
     }
 
     input, button {
       padding: 0.75rem;
-      margin: 0.5rem;
+      margin: 0.5rem 0;
       font-size: 1rem;
       border-radius: 0.5rem;
       border: none;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     button {
       background: linear-gradient(to right, #0072ff, #00c6ff);
       color: white;
       cursor: pointer;
-    }
-
-    .result {
-      margin-top: 1rem;
-      font-weight: bold;
     }
 
     .result-container {
@@ -52,6 +54,25 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
+
+    .history-container {
+      margin-top: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: left;
+    }
+
+    .history-container ul {
+      padding-left: 1rem;
+      margin: 0;
+    }
+
+    .history-container li {
+      margin-bottom: 0.25rem;
+    }
   </style>
 </head>
 <body>
@@ -60,7 +81,13 @@
     <input type="number" id="base" placeholder="Base (a)" />
     <input type="number" id="exponent" placeholder="Exponent (b)" />
     <button onclick="calculatePower()">Calculate</button>
+
     <div class="result-container" id="resultDisplay">Result will appear here...</div>
+
+    <div class="history-container" id="historyContainer">
+      <strong>Previous Operations:</strong>
+      <ul id="historyList"></ul>
+    </div>
   </div>
 
   <div style="position: fixed; top: 20px; left: 20px;">
@@ -71,6 +98,9 @@
     function calculatePower() {
       const a = parseFloat(document.getElementById('base').value);
       const b = parseFloat(document.getElementById('exponent').value);
+      const display = document.getElementById('resultDisplay');
+
+      display.innerText = "Calculating...";
 
       fetch('/api/power', {
         method: 'POST',
@@ -81,16 +111,38 @@
       })
       .then(res => res.json())
       .then(data => {
-        if (data.result !== null) {
-          document.getElementById('resultDisplay').innerText = `Result: ${data.result}`;
+        if (data.result !== null && !isNaN(data.result)) {
+          display.innerText = `Result: ${data.result}`;
+
+          // Append to history
+          const historyList = document.getElementById('historyList');
+          const newItem = document.createElement('li');
+          newItem.textContent = `a=${a}, b=${b} → ${data.result}`;
+          historyList.prepend(newItem);
         } else {
-          document.getElementById('resultDisplay').innerText = `Error: invalid input`;
+          display.innerText = `Error: Invalid input`;
         }
       })
       .catch(err => {
-        document.getElementById('resultDisplay').innerText = `Error: invalid input`;
+        display.innerText = `Error: Invalid input`;
       });
     }
+
+    // Load last 10 logs on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch('/api/power/logs')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data.logs)) {
+            const historyList = document.getElementById("historyList");
+            data.logs.forEach(log => {
+              const li = document.createElement("li");
+              li.textContent = `${log.parameters} → ${log.result}`;
+              historyList.appendChild(li);
+            });
+          }
+        });
+    });
   </script>
 </body>
 </html>

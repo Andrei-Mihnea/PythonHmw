@@ -50,16 +50,16 @@ def calculate_factorial():
     
     token = request.cookies.get("access_token")
     username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
-    log_request('/factorial', [data.a, data.b], result, username)
+    log_request('/factorial', [data.a], result, username)
     return jsonify({"result": result}), 200
 
-@math_bp.route('/api/fibonacci/logs', methods=['GET'])
+@math_bp.route('/api/<operation>/logs', methods=['GET'])
 @login_required
-def get_fibonacci_logs():
+def get_operation_logs(operation):
     token = request.cookies.get("access_token")
     if not token:
         return {"error": "Unauthorized"}, 401
-    
+
     try:
         username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
     except jwt.ExpiredSignatureError:
@@ -67,8 +67,13 @@ def get_fibonacci_logs():
     except jwt.InvalidTokenError:
         return {"error": "Invalid token"}, 401
 
-    logs = RequestsLog().get_logs_by_username_and_endpoint(username, '/fibonacci')
-    
+    # Sanitize and map operation
+    allowed_operations = {'fibonacci', 'power', 'factorial'}
+    if operation not in allowed_operations:
+        return jsonify({"error": f"Unsupported operation '{operation}'"}), 400
+
+    logs = RequestsLog().get_logs_by_username_and_endpoint(username, f'/{operation}')
+
     return jsonify({
         "logs": [
             {
@@ -79,3 +84,4 @@ def get_fibonacci_logs():
             for log in logs
         ]
     })
+
