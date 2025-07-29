@@ -32,7 +32,7 @@ class AuthController:
         if user_model.exists_password_and_user(username, password):
             payload = {
                 "user_id": username,
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=15)
             }
 
             secret = "your-secret-key"
@@ -44,7 +44,7 @@ class AuthController:
                 httponly=True,
                 samesite='Strict',
                 secure=request.is_secure,
-                max_age=15
+                max_age= 30
             )
             return response
         return "<h1>Invalid username or password</h1>"
