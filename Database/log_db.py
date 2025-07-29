@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, TIMESTAMP
+from sqlalchemy import create_engine, Column, Integer, String, Text, TIMESTAMP,and_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
@@ -56,15 +56,17 @@ class RequestsLog(Base):
         finally:
             session.close()
     
-    def get_logs_by_username(self, username):
+    def get_logs_by_username_and_endpoint(self, username, endpoint):
         """Retrieve log entries by username."""
         session = SessionLocal()
         try:
-            logs = session.query(RequestsLog).filter(RequestsLog.username == username).order_by(RequestsLog.timestamp.desc()).limit(10).all()
-            if logs is not None:
-                return logs
-            else:
-                return None
+            logs = session.query(RequestsLog).filter(
+                and_(
+                    RequestsLog.username == username,
+                    RequestsLog.endpoint == endpoint
+                    )
+                ).order_by(RequestsLog.timestamp.desc()).limit(10).all()
+            return logs or []
         finally:
             session.close()
     

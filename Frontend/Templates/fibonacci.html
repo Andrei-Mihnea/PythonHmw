@@ -112,11 +112,11 @@
         if (Array.isArray(data.result)) {
           display.innerText = `Result:\n${data.result.join(', ')}`;
 
-          // Append to history
+          
           const historyList = document.getElementById('historyList');
           const newItem = document.createElement('li');
           newItem.textContent = `n=${a} → ${data.result.join(', ')}`;
-          historyList.prepend(newItem); // newest first
+          historyList.prepend(newItem);
         } else {
           display.innerText = `Error: Invalid input`;
         }
@@ -126,9 +126,8 @@
       });
     }
 
-    // Load last 10 logs on page load
     window.addEventListener('DOMContentLoaded', () => {
-      fetch('/api/fibonacci/index')
+      fetch('/api/fibonacci/logs')
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data.logs)) {
