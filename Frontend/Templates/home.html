@@ -63,9 +63,33 @@
     .button-row button:hover {
       background: linear-gradient(to right, #0052cc, #009ecf);
     }
+
+    .logout-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      background: crimson;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .username-display {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
   </style>
 </head>
 <body>
+  <div class="username-display">👤 {{username}}</div>
+  <button class="logout-button" onclick="location.href='/auth/index'">🔒 Log Out</button>
   <div class="container">
     <h1>Welcome</h1>
     <div class="button-row">
@@ -74,5 +98,14 @@
       <button onclick="location.href='/factorial/index'">Factorial</button>
     </div>
   </div>
+  <script>
+  window.addEventListener('pageshow', function(event) {
+    // Detect if it's a back/forward navigation (persisted)
+    if (event.persisted || (window.performance && performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+      // Force reload to make browser re-fetch with headers
+      window.location.reload(true);
+    }
+  });
+</script>
 </body>
 </html>

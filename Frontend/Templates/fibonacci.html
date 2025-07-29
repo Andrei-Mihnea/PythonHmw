@@ -11,7 +11,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 1rem;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
     .card {
@@ -20,14 +22,19 @@
       border-radius: 1rem;
       text-align: center;
       backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
     }
 
     input, button {
       padding: 0.75rem;
-      margin: 0.5rem;
+      margin: 0.5rem 0;
       font-size: 1rem;
       border-radius: 0.5rem;
       border: none;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     button {
@@ -36,9 +43,16 @@
       cursor: pointer;
     }
 
-    .result {
+    .result-container {
       margin-top: 1rem;
-      font-weight: bold;
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: left;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -47,12 +61,19 @@
     <h2>Fibonacci Calculator</h2>
     <input type="number" id="fibIndex" placeholder="Fibonacci Index (n)" />
     <button onclick="calculateFibonacci()">Calculate</button>
-    <div class="result" id="resultDisplay"></div>
+    <div class="result-container" id="resultDisplay">Result will appear here...</div>
+  </div>
+
+  <div style="position: fixed; bottom: 20px; left: 20px;">
+    <button onclick="location.href='/home/index'">🏠 Return to Home</button>
   </div>
 
   <script>
     function calculateFibonacci() {
       const a = parseInt(document.getElementById('fibIndex').value);
+      const display = document.getElementById('resultDisplay');
+
+      display.innerText = "Calculating...";
 
       fetch('/api/fibonacci', {
         method: 'POST',
@@ -63,14 +84,14 @@
       })
       .then(res => res.json())
       .then(data => {
-        if (data.result !== undefined) {
-          document.getElementById('resultDisplay').innerText = `Result: ${data.result.join(', ')}`;
+        if (Array.isArray(data.result)) {
+          display.innerText = `Result:\n${data.result.join(', ')}`;
         } else {
-          document.getElementById('resultDisplay').innerText = `Error: ${JSON.stringify(data.error)}`;
+          display.innerText = `Error: Invalid input`;
         }
       })
       .catch(err => {
-        document.getElementById('resultDisplay').innerText = `Error: ${err.message}`;
+        display.innerText = `Error: Invalid input`;
       });
     }
   </script>

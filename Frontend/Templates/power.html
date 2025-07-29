@@ -51,6 +51,10 @@
     <div class="result" id="resultDisplay"></div>
   </div>
 
+  <div style="position: fixed; bottom: 20px; left: 20px;">
+    <button onclick="location.href='/home/index'">🏠 Return to Home</button>
+  </div>
+
   <script>
     function calculatePower() {
       const a = parseFloat(document.getElementById('base').value);
@@ -65,14 +69,14 @@
       })
       .then(res => res.json())
       .then(data => {
-        if (data.result !== undefined) {
+        if (data.result !== null) {
           document.getElementById('resultDisplay').innerText = `Result: ${data.result}`;
         } else {
-          document.getElementById('resultDisplay').innerText = `Error: ${JSON.stringify(data.error)}`;
+          document.getElementById('resultDisplay').innerText = `Error: invalid input`;
         }
       })
       .catch(err => {
-        document.getElementById('resultDisplay').innerText = `Error: ${err.message}`;
+        document.getElementById('resultDisplay').innerText = `Error: invalid input`;
       });
     }
   </script>

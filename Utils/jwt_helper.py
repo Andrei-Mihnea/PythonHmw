@@ -2,6 +2,8 @@
 import jwt
 from flask import request
 
+from Database.user_db import User
+
 SECRET_KEY = "your-secret-key"
 
 def validate_jwt():
@@ -10,8 +12,12 @@ def validate_jwt():
         return None
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_model = User()
+
+        if not user_model.get_user_by_username(payload.get("user_id")):
+            raise jwt.InvalidTokenError
+        
         return payload
-    except jwt.ExpiredSignatureError:
-        return None
-    except jwt.InvalidTokenError:
+    
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return None

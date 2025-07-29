@@ -114,6 +114,13 @@
         toggleLink.textContent = 'Already have an account? Login';
       }
     });
+      function logout() {
+
+    sessionStorage.clear();
+    localStorage.clear();
+
+  }
+  logout();
   </script>
 </body>
 </html>

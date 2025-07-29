@@ -12,13 +12,21 @@ class AuthController:
 
     def index(self):
         current_dir = os.path.dirname(__file__)
-
         template_path = os.path.join(current_dir, '..', 'Templates', 'auth.html')
         template_path = os.path.abspath(template_path)
 
         with open(template_path, 'r', encoding='utf-8') as f:
             html = f.read()
-        return html
+
+        response = make_response(html)
+        response.set_cookie(
+            'access_token', '',
+            expires=0,
+            httponly=True,
+            samesite='Strict',
+            secure=request.is_secure
+        )
+        return response
 
     def login(self):
         if request.method != 'POST':

@@ -1,6 +1,7 @@
 # Controllers/home_controller.py
 from Utils.decorators import login_required
 import os
+from flask import request, redirect, make_response
 
 class HomeController:
     @login_required
@@ -12,7 +13,11 @@ class HomeController:
 
         with open(template_path, 'r', encoding='utf-8') as f:
             html = f.read()
-        return html
+        response = make_response(html)
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
 
     @login_required
     def about(self):

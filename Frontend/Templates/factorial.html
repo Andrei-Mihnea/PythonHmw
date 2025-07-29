@@ -2,77 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Factorial Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #1e3c72;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
-    .card {
-      background: #ffffff20;
+    .container {
+      background: #ffffff10;
+      backdrop-filter: blur(10px);
       padding: 2rem;
       border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+      font-size: 2rem;
       text-align: center;
-      backdrop-filter: blur(10px);
     }
 
-    input, button {
-      padding: 0.75rem;
-      margin: 0.5rem;
-      font-size: 1rem;
-      border-radius: 0.5rem;
-      border: none;
+    .button-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    button {
+    .button-row button {
+      padding: 1.25rem 2rem;
+      font-size: 1.25rem;
       background: linear-gradient(to right, #0072ff, #00c6ff);
+      border: none;
+      border-radius: 0.5rem;
       color: white;
       cursor: pointer;
+      transition: background 0.3s ease;
+      min-width: 180px;
     }
 
-    .result {
-      margin-top: 1rem;
-      font-weight: bold;
+    .button-row button:hover {
+      background: linear-gradient(to right, #0052cc, #009ecf);
+    }
+
+    .logout-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      background: crimson;
+      border: none;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Factorial Calculator</h2>
-    <input type="number" id="factorialInput" placeholder="n" />
-    <button onclick="calculateFactorial()">Calculate</button>
-    <div class="result" id="resultDisplay"></div>
+  <button class="logout-button" onclick="logout()">🔒 Log Out</button>
+
+  <div class="container">
+    <h1>Welcome</h1>
+    <div class="button-row">
+      <button onclick="location.href='/power/index'">Power</button>
+      <button onclick="location.href='/fibonacci/index'">Fibonacci</button>
+      <button onclick="location.href='/factorial/index'">Factorial</button>
+    </div>
   </div>
-
-  <script>
-    function calculateFactorial() {
-      const a = parseInt(document.getElementById('factorialInput').value);
-
-      fetch('/api/factorial', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ a: a })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.result !== undefined) {
-          document.getElementById('resultDisplay').innerText = `Result: ${data.result}`;
-        } else {
-          document.getElementById('resultDisplay').innerText = `Error: ${JSON.stringify(data.error)}`;
-        }
-      })
-      .catch(err => {
-        document.getElementById('resultDisplay').innerText = `Error: ${err.message}`;
-      });
-    }
-  </script>
 </body>
 </html>
