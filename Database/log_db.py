@@ -18,6 +18,7 @@ class RequestsLog(Base):
     id = Column(Integer, primary_key=True, index=True)
     endpoint = Column(String(255), nullable=False)
     parameters = Column(Text, nullable=False)
+    username = Column(String(50), nullable=True)
     result = Column(Text, nullable=False)
     timestamp = Column(TIMESTAMP, nullable=False)
 

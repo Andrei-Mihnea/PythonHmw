@@ -1,7 +1,7 @@
 from datetime import datetime
 from Database.log_db import SessionLocal, RequestsLog
 
-def log_request(operation, inputs, result):
+def log_request(operation, inputs, result, username = None):
     """Log the request details."""
     session = SessionLocal()
     
@@ -10,6 +10,7 @@ def log_request(operation, inputs, result):
             endpoint=operation,
             parameters=str(inputs),
             result=str(result),
+            username=username,
             timestamp=datetime.utcnow()
         )
 

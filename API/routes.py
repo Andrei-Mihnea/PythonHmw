@@ -3,6 +3,7 @@ from API.services import power, fibonacci, factorial
 from Records.models import MathRequest
 from pydantic import ValidationError
 from Database.storage import log_request
+import jwt
 
 math_bp = Blueprint('math', __name__)
 
@@ -15,8 +16,9 @@ def calculate_power():
     
     result = power(data.a, data.b)
 
-
-    log_request('/power', [data.a, data.b], result)
+    token = request.cookies.get("access_token")
+    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
+    log_request('/power', [data.a, data.b], result, username)
     return jsonify({"result": result}), 200
 
 
@@ -29,7 +31,9 @@ def calculate_fibonacci():
     
     result = fibonacci(data.a)
     
-    log_request('/fibonacci', [data.a, data.b], result)
+    token = request.cookies.get("access_token")
+    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
+    log_request('/fibonacci', [data.a, data.b], result, username)
     return jsonify({"result": result}), 200
 
 
@@ -42,5 +46,7 @@ def calculate_factorial():
 
     result = factorial(data.a)
     
-    log_request('/factorial', [data.a, data.b], result)
+    token = request.cookies.get("access_token")
+    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
+    log_request('/factorial', [data.a, data.b], result, username)
     return jsonify({"result": result}), 200
