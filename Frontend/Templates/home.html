@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #ffffff10;
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .button-row button {
+      padding: 1.25rem 2rem;
+      font-size: 1.25rem;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      border: none;
+      border-radius: 0.5rem;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      min-width: 180px;
+    }
+
+    .button-row button:hover {
+      background: linear-gradient(to right, #0052cc, #009ecf);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome</h1>
+    <div class="button-row">
+      <button onclick="location.href='/power/index'">Power</button>
+      <button onclick="location.href='/fibonacci/index'">Fibonacci</button>
+      <button onclick="location.href='/factorial/index'">Factorial</button>
+    </div>
+  </div>
+</body>
+</html>

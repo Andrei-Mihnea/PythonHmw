@@ -58,8 +58,6 @@ class User(Base):
         session = SessionLocal()
         try:
             user = session.query(User).filter(User.username == usr).first()
-            print(password.encode('utf-8'))
-            print(user.password.encode('utf-8'))
             if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
                 return True
             return False
