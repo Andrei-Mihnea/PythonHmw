@@ -3,18 +3,22 @@ def power(a,b):
     return a ** b
 
 def fibonacci(n):
-    """Calculate the nth Fibonacci number."""
+    """Return a list of Fibonacci numbers up to index n (inclusive), starting from 1, 1."""
     if n < 0:
-        raise ValueError("Fibonacci number is not defined for negative indices")
-    elif n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        a, b = 0, 1
-        for _ in range(2, n + 1):
-            a, b = b, a + b
-        return b
+        raise ValueError("Fibonacci number is not defined for non-positive indices")
+    sequence = [0]
+    if n == 0:
+        return sequence
+    
+    sequence.append(1)  
+
+    if n == 1:
+        return sequence
+
+    for i in range(2, n):
+        sequence.append(sequence[-1] + sequence[-2])
+    return sequence
+
     
 def factorial(n):
     """Calculate the factorial of n."""
