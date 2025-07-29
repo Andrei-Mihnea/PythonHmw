@@ -40,6 +40,18 @@
       margin-top: 1rem;
       font-weight: bold;
     }
+
+    .result-container {
+      margin-top: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: left;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
@@ -48,11 +60,11 @@
     <input type="number" id="base" placeholder="Base (a)" />
     <input type="number" id="exponent" placeholder="Exponent (b)" />
     <button onclick="calculatePower()">Calculate</button>
-    <div class="result" id="resultDisplay"></div>
+    <div class="result-container" id="resultDisplay">Result will appear here...</div>
   </div>
 
-  <div style="position: fixed; bottom: 20px; left: 20px;">
-    <button onclick="location.href='/home/index'">🏠 Return to Home</button>
+  <div style="position: fixed; top: 20px; left: 20px;">
+    <button onclick="location.href='/home/index'">⬅️ Back</button>
   </div>
 
   <script>
