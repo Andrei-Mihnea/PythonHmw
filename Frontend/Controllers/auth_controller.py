@@ -6,7 +6,7 @@ import bcrypt
 import jwt
 import datetime
 import time
-from flask import request, redirect, make_response
+from flask import request, redirect, make_response, flash
 
 class AuthController:
 
@@ -77,6 +77,14 @@ class AuthController:
 
             session.add(user)
             session.commit()
+        except Exception as e:
+            session.rollback()
+            return f'''
+                <script>
+                    alert("Registration failed: Invalid data or user already exists.");
+                    window.location.href = "/auth/register";
+                </script>
+            '''
         finally:
             session.close()
 
