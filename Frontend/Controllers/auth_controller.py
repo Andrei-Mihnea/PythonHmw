@@ -82,7 +82,7 @@ class AuthController:
             return f'''
                 <script>
                     alert("Registration failed: Invalid data or user already exists.");
-                    window.location.href = "/auth/register";
+                    window.location.href = "/auth/index";
                 </script>
             '''
         finally:
