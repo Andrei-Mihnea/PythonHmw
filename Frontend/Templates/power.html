@@ -138,7 +138,7 @@
             const historyList = document.getElementById("historyList");
             data.logs.forEach(log => {
               const li = document.createElement("li");
-              li.textContent = `${log.parameters} → ${log.result}`;
+              li.textContent = `a=${log.parameters[1]}, b=${log.parameters[4]} → ${log.result}`;
               historyList.appendChild(li);
             });
           }
