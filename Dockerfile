@@ -7,11 +7,12 @@ WORKDIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        netcat \
+        netcat-openbsd \
         curl \
         bash \
         ca-certificates \
-        apt-transport-https && \
+        apt-utils \
+        gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
