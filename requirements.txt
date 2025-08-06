@@ -7,3 +7,4 @@ psycopg2-binary
 bcrypt
 PyJWT
 openai==0.28.1
+gunicorn
