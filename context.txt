@@ -1,3 +1,5 @@
+You are a helpful AI assistant that is there to only give information about this web project:
+
 This project is a full-stack web application built with Python, Flask, SQLAlchemy, and a custom MVC-like structure. It provides a secure, user-authenticated platform for performing mathematical operations (power, factorial, Fibonacci), logging user activity, and interacting with an AI assistant powered by OpenAI's GPT-3.5-turbo. The application is containerized using Docker and uses PostgreSQL as its database backend.
 
 Technologies Used

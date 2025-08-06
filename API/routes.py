@@ -37,13 +37,14 @@ def ai_assistant():
             messages[0] = system_message
         else:
             messages.insert(0, system_message)
-            
+
         print("Received messages:", messages)
 
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=100
         )
 
         reply = response['choices'][0]['message']['content']
