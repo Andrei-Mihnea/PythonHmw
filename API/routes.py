@@ -6,8 +6,37 @@ from Database.storage import log_request
 import jwt
 from Utils.decorators import login_required
 from Database.log_db import RequestsLog
+import openai
+from openai import OpenAIError
+import os
 
 math_bp = Blueprint('math', __name__)
+openai.api_key = os.getenv("OPENAI_API_KEY") 
+
+@math_bp.route('/api/assistant', methods=['POST'])
+def ai_assistant():
+    try:
+        data = request.get_json()
+
+        if not data or 'messages' not in data:
+            return jsonify({'error': 'Missing messages'}), 400
+
+        messages = data['messages']
+        print("Received messages:", messages)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            temperature=0.7
+        )
+
+        reply = response['choices'][0]['message']['content']
+        return jsonify({'reply': reply})
+
+    except OpenAIError as e:
+        return jsonify({'error': 'OpenAI API failed', 'details': str(e)}), 500
+
+    except Exception as e:
+        return jsonify({'error': 'Internal server error', 'details': str(e)}), 500
 
 @math_bp.route('/api/power', methods=['POST'])
 def calculate_power():
