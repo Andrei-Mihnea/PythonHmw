@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# Install required system packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         netcat-openbsd \
@@ -15,14 +16,18 @@ RUN apt-get update && \
         gnupg && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# Copy all project files
 COPY . .
 
-RUN chmod +x wait-for-it.sh
+# Make your scripts executable
+RUN chmod +x wait-for-it.sh start.sh
 
+# Expose Flask/Gunicorn port
 EXPOSE 5000
 
-CMD ["sh", "-c", "./wait-for-it.sh $(echo $DATABASE_URL | sed -e 's/^.*@//' -e 's#/.*##'):5432 -- gunicorn -w 4 -b 0.0.0.0:5000 main:app"]
-
+# Start using dynamic DATABASE_URL parsing inside start.sh
+CMD ["./start.sh"]
