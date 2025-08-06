@@ -14,4 +14,5 @@ else
 fi
 
 echo "[start.sh] Waiting for $DB_HOST:$DB_PORT..."
-exec ./wait-for-it.sh "$DB_HOST" "$DB_PORT" -- gunicorn -w 4 -b 0.0.0.0:5000 main:app
+./wait-for-it.sh "$DB_HOST" "$DB_PORT" -- \
+  gunicorn -w 4 -b 0.0.0.0:5000 main:app

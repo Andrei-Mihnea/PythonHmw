@@ -11,4 +11,5 @@ while ! nc -z "$HOST" "$PORT"; do
 done
 
 echo "$HOST:$PORT is up — launching app"
+echo "Executing command: $@"
 exec "$@"
