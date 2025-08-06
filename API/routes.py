@@ -32,12 +32,13 @@ def ai_assistant():
         }
 
         messages = data['messages']
-        print("Received messages:", messages)
 
         if messages and messages[0].get("role") == "system":
             messages[0] = system_message
         else:
             messages.insert(0, system_message)
+            
+        print("Received messages:", messages)
 
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",

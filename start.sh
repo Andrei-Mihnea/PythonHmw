@@ -13,5 +13,8 @@ else
   DB_PORT="5432"
 fi
 
+PORT="${PORT:-5000}"
+
 echo "[start.sh] Waiting for $DB_HOST:$DB_PORT..."
-./wait-for-it.sh "$DB_HOST" "$DB_PORT" -- gunicorn -w 4 -b 0.0.0.0:5000 main:app
+echo "[start.sh] Starting app on port $PORT"
+./wait-for-it.sh "$DB_HOST" "$DB_PORT" -- gunicorn -w 4 -b 0.0.0.0:$PORT main:app
