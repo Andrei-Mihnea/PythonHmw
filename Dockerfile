@@ -24,4 +24,5 @@ RUN chmod +x wait-for-it.sh
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "./wait-for-it.sh $(echo $DATABASE_URL | cut -d@ -f2 | cut -d/ -f1) -- gunicorn -w 4 -b 0.0.0.0:5000 main:app"]
+CMD ["sh", "-c", "./wait-for-it.sh $(echo $DATABASE_URL | sed -e 's/^.*@//' -e 's#/.*##'):5432 -- gunicorn -w 4 -b 0.0.0.0:5000 main:app"]
+
