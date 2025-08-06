@@ -2,7 +2,7 @@
 
 HOST="$1"
 PORT="$2"
-shift 2
+shift 3
 
 echo "Waiting for $HOST:$PORT..."
 
