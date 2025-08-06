@@ -1,0 +1,104 @@
+This project is a full-stack web application built with Python, Flask, SQLAlchemy, and a custom MVC-like structure. It provides a secure, user-authenticated platform for performing mathematical operations (power, factorial, Fibonacci), logging user activity, and interacting with an AI assistant powered by OpenAI's GPT-3.5-turbo. The application is containerized using Docker and uses PostgreSQL as its database backend.
+
+Technologies Used
+Backend
+Python 3.11: The primary programming language.
+Flask: Lightweight WSGI web application framework for Python, used for routing, request handling, and serving as the main web server.
+SQLAlchemy: ORM (Object Relational Mapper) for database access and schema management.
+Pydantic: For data validation and parsing, especially for API request payloads.
+bcrypt: For secure password hashing and verification.
+PyJWT: For handling JWT-based authentication.
+OpenAI API: For AI assistant chat functionality.
+Gunicorn: Production WSGI server for running Flask apps.
+Frontend
+HTML/CSS/JavaScript: Custom templates for user interface, including forms, calculators, and chat UI.
+No frontend frameworks: The UI is built with vanilla HTML, CSS, and JS.
+Infrastructure
+Docker: Containerizes the application and database for consistent deployment.
+docker-compose: Orchestrates multi-container setup (app + database).
+PostgreSQL: Relational database for user data and request logs.
+Shell scripts: For startup and health checks (start.sh, wait-for-it.sh).
+
+How It Works
+1. Authentication & User Management
+Registration: Users can register with a username, email, and password. Passwords are hashed with bcrypt and stored in the users table.
+Login: Users log in with username and password. On success, a JWT is issued and stored in an HTTP-only cookie.
+JWT Validation: All protected routes use a login_required decorator, which checks the JWT's validity and ensures the user exists.
+Logout: Clears the JWT cookie and session storage.
+2. Custom Routing (MVC-like)
+The project uses a custom router (router.py) to mimic MVC patterns:
+URLs like /power/index are mapped to power_controller.py, class PowerController, method index.
+The router dynamically loads the controller class and invokes the requested method.
+This allows for separation of concerns and easier scaling of features.
+3. Frontend (UI)
+Templates: HTML files in Templates provide the UI for login, registration, home, and each math operation.
+JavaScript: Handles form submissions, fetches API results, and updates the UI dynamically (e.g., displaying results and operation history).
+Chat Assistant: A floating chat button opens a modal for interacting with the OpenAI-powered assistant.
+4. API Endpoints
+All API endpoints are defined in routes.py using Flask Blueprints.
+
+Endpoints:
+
+/api/power (POST): Calculates a^b.
+/api/fibonacci (POST): Returns Fibonacci sequence up to n.
+/api/factorial (POST): Calculates factorial of n.
+/api/<operation>/logs (GET): Returns the last 10 logs for the current user and operation.
+/api/assistant (POST): Forwards chat messages to OpenAI and returns the assistant's reply.
+Validation: All math endpoints use Pydantic models (Records/models.py) for input validation.
+
+5. Math Services
+Implemented in services.py:
+Power: Handles large/small numbers, returns None for out-of-bounds.
+Fibonacci: Returns a list up to n, with input validation.
+Factorial: Iterative calculation, with input validation.
+6. Logging & Database
+Request Logging: Every math operation is logged in the requests_log table with endpoint, parameters, result, username, and timestamp.
+Log Retrieval: Users can fetch their last 10 operations for each endpoint.
+Database Models: Defined using SQLAlchemy ORM in log_db.py and user_db.py.
+Database Initialization: Tables are created at startup if they don't exist.
+7. Security
+Password Hashing: All passwords are hashed with bcrypt.
+JWT: Used for stateless authentication, stored in HTTP-only cookies.
+Route Protection: All sensitive routes require valid JWTs.
+Input Validation: All API inputs are validated with Pydantic.
+8. Deployment & Infrastructure
+Dockerized: The app and database run in separate containers.
+Health Checks: The app waits for the database to be ready before starting.
+Environment Variables: Used for database URLs and OpenAI API keys.
+Production-Ready: Uses Gunicorn for serving Flask in production.
+Features
+User Registration & Login: Secure, with hashed passwords and JWT authentication.
+Math Operations: Power, Fibonacci, and Factorial calculators with input validation.
+Operation History: Each user can view their last 10 operations for each calculator.
+AI Assistant: Chat interface powered by OpenAI's GPT-3.5-turbo for general questions.
+Custom MVC Routing: Clean separation of controllers, templates, and logic.
+RESTful API: All math operations and logs are accessible via JSON APIs.
+Responsive UI: Modern, user-friendly HTML/CSS design.
+Secure by Default: All sensitive endpoints are protected; cookies are HTTP-only and secure.
+What You Can Do With This Project
+Register and log in to your own account.
+Calculate powers, Fibonacci sequences, and factorials with a modern web UI.
+See your operation history for each calculator, securely tied to your account.
+Chat with an AI assistant for help or general questions.
+Deploy the app anywhere using Docker, with a production-ready setup.
+Extend the platform: Add new controllers, templates, or API endpoints easily thanks to the modular structure.
+Extensibility
+Add new math operations: Create a new controller, template, and API endpoint.
+Integrate more AI features: Expand the assistant or add new AI-powered endpoints.
+Enhance security: Add email verification, password reset, or OAuth.
+Scale up: Deploy with more workers, use managed PostgreSQL, or add caching.
+Summary
+This project is a robust, secure, and extensible web platform for authenticated users to perform and track mathematical operations, with a modern UI and AI-powered assistant. It leverages best practices in Python web development, security, and containerization, making it suitable for both learning and real-world deployment.
+
+Key files and their roles:
+
+main.py: App entrypoint, initializes Flask and routing.
+router.py: Custom MVC router.
+routes.py: All API endpoints.
+services.py: Math logic.
+log_db.py, user_db.py: ORM models.
+Templates: HTML UI.
+Controllers: Page controllers.
+decorators.py, jwt_helper.py: Security helpers.
+docker-compose.yml, Dockerfile: Deployment.
+For more details, see the code in the referenced files.

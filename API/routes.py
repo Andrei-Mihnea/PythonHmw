@@ -21,8 +21,24 @@ def ai_assistant():
         if not data or 'messages' not in data:
             return jsonify({'error': 'Missing messages'}), 400
 
+        base_dir = os.getcwd() 
+        context_file_path = os.path.join(base_dir, 'context.txt')
+        with open(context_file_path, 'r', encoding='utf-8') as f:
+            system_content = f.read().strip()
+
+        system_message = {
+            "role": "system",
+            "content": system_content
+        }
+
         messages = data['messages']
         print("Received messages:", messages)
+
+        if messages and messages[0].get("role") == "system":
+            messages[0] = system_message
+        else:
+            messages.insert(0, system_message)
+
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
