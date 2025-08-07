@@ -7,7 +7,7 @@ from Database.log_db import RequestsLog, SessionLocal
 
 class FibonacciController:
     @login_required
-    def index(self):
+    def index(self, user):
         current_dir = os.path.dirname(__file__)
         template_path = os.path.join(current_dir, '..', 'Templates', 'fibonacci.html')
         template_path = os.path.abspath(template_path)

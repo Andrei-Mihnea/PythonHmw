@@ -3,7 +3,7 @@ import os
 from flask import request, make_response
 class PowerController:
     @login_required
-    def index(self):
+    def index(self, user):
         current_dir = os.path.dirname(__file__)
         template_path = os.path.join(current_dir, '..', 'Templates', 'power.html')
         template_path = os.path.abspath(template_path)
@@ -18,5 +18,5 @@ class PowerController:
 
 
     @login_required
-    def status(self):
+    def status(self, user):
         return "Power Status: All systems operational"

@@ -17,10 +17,9 @@ def handle_request(path):
     full_path = "/" + path
 
     if full_path.startswith('/api') or full_path.startswith('/static'):
-        return f"Skipped by router: {full_path}", 404
+        return f"Page not found: {full_path}", 404
     return router.route(full_path)
 
-app.run(host="0.0.0.0", port=8000)
-if __name__ == '__main__':
 
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port = int(os.environ.get("PORT", 5000)), debug = True)

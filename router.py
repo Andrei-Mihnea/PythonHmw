@@ -18,7 +18,7 @@ class Router:
         class_name = f"{controller_name.capitalize()}Controller"
 
         if not os.path.isfile(controller_file):
-            return f"Error: Controller file '{controller_file}' not found"
+            return f"Error: Page '{controller_file}' not found"
 
         spec = importlib.util.spec_from_file_location(class_name, controller_file)
         module = importlib.util.module_from_spec(spec)

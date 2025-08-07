@@ -26,12 +26,12 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8000:8000"
+      - "8000:5000"
     volumes:
       - .:/app
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
-    command: ["sh", "-c", "chmod +x wait-for-it.sh && ./wait-for-it.sh db 5432 python main.py"]
+    #command: ["sh", "-c", "chmod +x wait-for-it.sh && ./wait-for-it.sh db 5432 python main.py"]
 
 volumes:
   pg_data:

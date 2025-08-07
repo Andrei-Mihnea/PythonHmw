@@ -6,7 +6,7 @@ from flask import request, redirect, make_response
 
 class HomeController:
     @login_required
-    def index(self):
+    def index(self, user):
         current_dir = os.path.dirname(__file__)
 
         template_path = os.path.join(current_dir, '..', 'Templates', 'home.html')
@@ -28,5 +28,5 @@ class HomeController:
         return response
 
     @login_required
-    def about(self):
+    def about(self, user):
         return "This is the about page."

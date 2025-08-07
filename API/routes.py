@@ -8,13 +8,18 @@ from Utils.decorators import login_required
 from Database.log_db import RequestsLog
 import openai
 from openai import OpenAIError
+from Database.user_db import User
 import os
 
 math_bp = Blueprint('math', __name__)
 openai.api_key = os.getenv("OPENAI_API_KEY") 
 
 @math_bp.route('/api/assistant', methods=['POST'])
-def ai_assistant():
+@login_required
+def ai_assistant(user):
+    if User.get_user_by_username(user) is None:
+        return jsonify({"error": "user not found"}), 404
+
     try:
         data = request.get_json()
 
@@ -57,69 +62,77 @@ def ai_assistant():
         return jsonify({'error': 'Internal server error', 'details': str(e)}), 500
 
 @math_bp.route('/api/power', methods=['POST'])
-def calculate_power():
+@login_required
+def calculate_power(user):
     try:
         data = MathRequest.parse_obj(request.get_json())
     except ValidationError as e:
         return jsonify({"error": e.errors()}),400
-    
-    result = power(data.a, data.b)
 
-    token = request.cookies.get("access_token")
-    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
-    log_request('/power', [data.a, data.b], result, username)
+    if User.get_user_by_username(user) is None:
+        return jsonify({"error": "User not found"}), 404
+    
+    if(data.a < -1000 or data.a > 1000 or data.b < -1000 or data.b > 1000):
+        return jsonify({"error": "Invalid data"}), 405
+
+    result = power(data.a, data.b)
+    log_request('/power', [data.a, data.b], result, user)
+
     return jsonify({"result": result}), 200
 
 
 @math_bp.route('/api/fibonacci', methods=['POST'])
-def calculate_fibonacci():
+@login_required
+def calculate_fibonacci(user):
     try:
         data = MathRequest.parse_obj(request.get_json())
     except ValidationError as e:
-        return jsonify({"error": e.errors()}),400
+        return jsonify({"error": e.errors()}), 400
+
+    if User.get_user_by_username(user) is None:
+        return jsonify({"error": "User not found"}), 404
     
+    if(data.a < 0 or data.a > 10000):
+        return jsonify({"error": "Invalid data"}), 405
+
     result = fibonacci(data.a)
+    log_request('/fibonacci', [data.a], result, user)
     
-    token = request.cookies.get("access_token")
-    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
-    log_request('/fibonacci', [data.a], result, username)
     return jsonify({"result": result}), 200
 
 
 @math_bp.route('/api/factorial', methods=['POST'])
-def calculate_factorial():
+@login_required
+def calculate_factorial(user):
     try:
         data = MathRequest.parse_obj(request.get_json())
     except ValidationError as e:
-        return jsonify({"error": e.errors()}),400
+        return jsonify({"error": e.errors()}), 400
+
+    if User.get_user_by_username(user) is None:
+        return jsonify({"error": "User not found"}), 404
+
+    if(data.a < 0 or data.a > 170):
+        return jsonify({"error": "Invalid data"}), 405
 
     result = factorial(data.a)
-    
-    token = request.cookies.get("access_token")
-    username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
-    log_request('/factorial', [data.a], result, username)
+    log_request('/factorial', [data.a], result, user)
+
     return jsonify({"result": result}), 200
 
 @math_bp.route('/api/<operation>/logs', methods=['GET'])
 @login_required
-def get_operation_logs(operation):
-    token = request.cookies.get("access_token")
-    if not token:
-        return {"error": "Unauthorized"}, 401
+def get_operation_logs(operation, user):
 
-    try:
-        username = jwt.decode(token, "your-secret-key", algorithms=["HS256"]).get("user_id")
-    except jwt.ExpiredSignatureError:
-        return {"error": "Token expired"}, 401
-    except jwt.InvalidTokenError:
-        return {"error": "Invalid token"}, 401
+    if User.get_user_by_username(user) is None:
+        return jsonify({"error": "User not found"}), 404
 
-    # Sanitize and map operation
+
     allowed_operations = {'fibonacci', 'power', 'factorial'}
     if operation not in allowed_operations:
         return jsonify({"error": f"Unsupported operation '{operation}'"}), 400
 
-    logs = RequestsLog().get_logs_by_username_and_endpoint(username, f'/{operation}')
+    logs = RequestsLog().get_logs_by_username_and_endpoint(user, f'/{operation}')
 
     return jsonify({
         "logs": [

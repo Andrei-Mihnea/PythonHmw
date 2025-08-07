@@ -26,7 +26,8 @@ class User(Base):
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
     
-    def get_user_by_id(self, user_id):
+    @staticmethod
+    def get_user_by_id(user_id):
         """Retrieve a user by their ID."""
         session = SessionLocal()
         try:
@@ -34,8 +35,9 @@ class User(Base):
             return user
         finally:
             session.close()
-    
-    def get_user_by_username(self, username):
+
+    @staticmethod
+    def get_user_by_username(username):
         """Retrieve a user by their username."""
         session = SessionLocal()
         try:
@@ -43,7 +45,8 @@ class User(Base):
             return user
         finally:
             session.close()
-    
+
+    @staticmethod
     def get_user_by_email(self, email):
         """Retrieve a user by their email."""
         session = SessionLocal()
@@ -53,7 +56,8 @@ class User(Base):
         finally:
             session.close()
 
-    def exists_password_and_user(self, usr, password):
+    @staticmethod
+    def exists_password_and_user(usr, password):
         """Check if a user with the given username and password exists."""
         session = SessionLocal()
         try:
