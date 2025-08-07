@@ -74,6 +74,7 @@ def calculate_power(user):
     
     if(data.a < -1000 or data.a > 1000 or data.b < -1000 or data.b > 1000):
         return jsonify({"error": "Invalid data"}), 405
+        
 
     result = power(data.a, data.b)
     log_request('/power', [data.a, data.b], result, user)
@@ -95,6 +96,7 @@ def calculate_fibonacci(user):
     if(data.a < 0 or data.a > 10000):
         return jsonify({"error": "Invalid data"}), 405
 
+
     result = fibonacci(data.a)
     log_request('/fibonacci', [data.a], result, user)
     
@@ -114,6 +116,7 @@ def calculate_factorial(user):
 
     if(data.a < 0 or data.a > 170):
         return jsonify({"error": "Invalid data"}), 405
+
 
     result = factorial(data.a)
     log_request('/factorial', [data.a], result, user)
