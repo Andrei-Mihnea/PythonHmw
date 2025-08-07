@@ -18,7 +18,7 @@ class Router:
         class_name = f"{controller_name.capitalize()}Controller"
 
         if not os.path.isfile(controller_file):
-            return f"Error: Page '{controller_file}' not found"
+            return f"Error: Page not found <br> <a href = '/home/index'>Go to Home</a>", 404
 
         spec = importlib.util.spec_from_file_location(class_name, controller_file)
         module = importlib.util.module_from_spec(spec)
@@ -27,11 +27,11 @@ class Router:
 
         controller_class = getattr(module, class_name, None)
         if controller_class is None:
-            return f"Error: Class '{class_name}' not found in {controller_file}"
+            return f"Error: Page not found <br> <a href = '/home/index'>Go to Home</a>", 404
 
         controller_instance = controller_class()
 
         if not hasattr(controller_instance, action_name):
-            return f"Error: Method '{action_name}' not found in {class_name}"
+            return f"Error: Page not found <br> <a href = '/home/index'>Go to Home</a>", 404
 
         return getattr(controller_instance, action_name)(*params)

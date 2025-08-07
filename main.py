@@ -17,7 +17,7 @@ def handle_request(path):
     full_path = "/" + path
 
     if full_path.startswith('/api') or full_path.startswith('/static'):
-        return f"Page not found: {full_path}", 404
+        return f"Page not found: {full_path} <br> <a href = '/home/index'>Go to Home</a>", 404
     return router.route(full_path)
 
 
