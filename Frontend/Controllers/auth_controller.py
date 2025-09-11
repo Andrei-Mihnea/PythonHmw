@@ -35,9 +35,8 @@ class AuthController:
         username = request.form.get('username', '')
         password = request.form.get('password', '')
 
-        user_model = User()
 
-        if user_model.exists_password_and_user(username, password):
+        if User.exists_password_and_user(username, password):
             payload = {
                 "user_id": username,
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=1800)

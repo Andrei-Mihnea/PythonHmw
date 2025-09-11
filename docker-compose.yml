@@ -2,7 +2,6 @@ services:
   db:
     image: postgres:16
     container_name: math_container_db
-    restart: always
     ports:
       - "15432:5432"
     environment:
